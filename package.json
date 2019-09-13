@@ -1,8 +1,14 @@
 {
   "name": "shelfie",
   "version": "0.1.0",
+  "proxy": "http://localhost:4020",
+  "main": "server/index.js",
   "private": true,
   "dependencies": {
+    "axios": "^0.19.0",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "massive": "^6.0.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-scripts": "3.1.1"
