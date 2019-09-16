@@ -1,16 +1,18 @@
 require('dotenv').config()
 const express = require('express')
+const app = express()
 const massive = require('massive')
 const {SERVER_PORT, CONNECTION_STRING} = process.env
-const ctrl = require('./constroller')
+const ctrl = require('./constroller.js')
 
-const app = express()
+
 
 app.use(express.json())
 
-app.get('api/inventory', ctrl.getProducts)
-app.post('api/inventory', ctrl.addProduct)
+app.get('/api/inventory', ctrl.getProducts)
+app.post('/api/inventory', ctrl.addProduct)
 app.delete('/api/inventory/:id', ctrl.deleteProduct)
+app.put('/api/inventory/:id', ctrl.updateProduct)
 
 massive(CONNECTION_STRING).then(db => {
     app.set('db', db)

@@ -17,11 +17,18 @@ export default class Form extends Component{
 
     cancelButton= () => {
         this.setState({
-            [this.state.item]: '',
-            [this.state.price]: '',
-            [this.state.img]: ''
+            item: '',
+            price: '',
+            img: ''
         })
     }
+
+    componentDidUpdate(prevProps){
+        if(prevProps !== this.props.inventory) {
+            
+        }
+      }
+    
 
 
     render(){
@@ -37,7 +44,7 @@ export default class Form extends Component{
                 </div>
                 <div className="buttons">
                     <button onClick={() => this.cancelButton()} >Cancel</button>
-                    <button>Add to Inventory</button>
+                    <button onClick={() => this.props.addFn(this.state)} >Add to Inventory</button>
                 </div>
             </div>
         )

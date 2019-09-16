@@ -1,7 +1,7 @@
 {
   "name": "shelfie",
   "version": "0.1.0",
-  "proxy": "http://localhost:4020",
+  "proxy": "http://localhost:4040",
   "main": "server/index.js",
   "private": true,
   "dependencies": {

@@ -10,25 +10,14 @@ class App extends Component{
     super()
 
     this.state = {
-      inventory: {
-        // product1: {
-        //   name: 'shoe',
-        //   price: 45,
-        //   img: '?',
-        // },
-        // product2: {
-        //   name: 'pants',
-        //   price: 7,
-        //   img: '?'
-        // },
-        // product3: {
-        //   name: 'socks',
-        //   price: 673,
-        //   img: '?'
-        // }
-      }
+      inventory: [
+        
+      ]
     }
+
+
     this.addProduct = this.addProduct.bind(this)
+    this.deleteProduct = this.deleteProduct.bind(this)
   }
 
   componentDidMount(){
@@ -44,20 +33,29 @@ class App extends Component{
   }
 
   deleteProduct(id) {
-    axios.delete(`/api/menu/${id}`).then(res => {
+    // console.log(id)
+    axios.delete(`/api/inventory/${id}`).then(res => {
+      console.log(res.data)
       this.setState({inventory: res.data})
     })
   }
 
 
+
+
   render(){
+
     return(
       <div className="App">
         <Header />
         <Form 
         addFn={this.addProduct}/>
+        {this.state.inventory ?  
         <Dashboard 
+        inventory={this.state.inventory}
+        deleteFn={this.deleteProduct}
          />
+        : <h3>loading....</h3> }
       </div>
     )
   }
