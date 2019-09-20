@@ -1,13 +1,14 @@
 import React, {Component} from 'react'
 
 export default class Form extends Component{
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
 
         this.state = {
             item: '',
             price: 0,
-            img: ''
+            img: '',
+            edit: false
         }
     }
 
@@ -16,18 +17,19 @@ export default class Form extends Component{
     }
 
     cancelButton= () => {
-        this.setState({
-            item: '',
-            price: '',
-            img: ''
-        })
+        if (this.props.match.params.id) {
+            this.props.history.push('/')
+        } else {
+            this.setState({
+                item: '',
+                price: 0,
+                img: '',
+                edit: false
+            })
+        }
     }
 
-    componentDidUpdate(prevProps){
-        if(prevProps !== this.props.inventory) {
-            
-        }
-      }
+
     
 
 
@@ -50,3 +52,6 @@ export default class Form extends Component{
         )
     }
 }
+
+
+

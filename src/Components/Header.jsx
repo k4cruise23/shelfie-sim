@@ -1,9 +1,14 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 function Header() {
     return(
         <div>
-        Header
+        <h1>Shelfie</h1>
+        <div className="buttons">
+            <Link to='/'>Dashboard</Link>
+            <Link to='/form'>Add Inventory</Link>
+        </div>
         </div>
     )
 }
