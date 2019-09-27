@@ -1,75 +1,62 @@
 import React, {Component} from 'react'
-import Form from './Form'
+// import Product from './Product'
 import axios from 'axios'
+import {Link} from 'react-router-dom'
 
 export default class Dashboard extends Component {
-constructor(props){
-    super(props)
-
-    this.state={
-      inventory: []
+    constructor() {
+        super(); 
+        
+        this.state = {
+            inventory: [], 
+        }
     }
 
-    this.addProduct = this.addProduct.bind(this)
-}
-
-
-componentDidMount(){
-  this.getProducts()
-}
-
-getProducts(){
-  axios.get('/api/inventory').then(res => {
-    this.setState({inventory: res.data})
-  })
-}
-
-componentDidUpdate(prevProps, prevState){
-  if(prevState !== this.state){
-      this.getProducts()
-  }
-}
-
-addProduct(body){
-  axios.post('/api/inventory', body).then(res => {
-    this.setState({inventory: res.data})
-  })
-}
-
-deleteProduct(id) {
-  // console.log(id)
-  axios.delete(`/api/inventory/${id}`).then(res => {
-    // console.log(res.data)
-    this.setState({inventory: res.data})
-  })
-}
-
-updateProduct(id){
-  {}
-
-}
-
-
-
-    render(){
-        // console.log(this.state.inventory)
-        // console.log(this.state.id)
-        return (
-            <div>
-            {this.state.inventory.length ? this.state.inventory.map(element => {
-        return (
-          <div key={element.product_id} >
-            <h3>{element.product_name}</h3>
-            <h3>{element.product_price}</h3>
-            <img src={element.image_url} alt={`img of ${element.product_name}`}/>
-            <button className="delete" onClick={() => this.deleteProduct(element.product_id)} >Delete</button>
-            <button>Edit</button>
-          </div>
+    componentDidMount() {
+        this.getInventory(); 
+      };
+      
+    getInventory = () => {
+        axios.get('/api/inventory')
+        .then(response => {
+          this.setState({
+            inventory: response.data 
+          })
+        })
+      };
+      
+    deleteProduct = (id) => {
+        console.log(id)
+        axios.delete(`/api/products/${id}`)
+            .then(() => {
+                this.getInventory();
+            })
+            .catch(error => {console.log('Error in Dashboard:', error)})
+    }
+    render() {
+        console.log(this.state.inventory)
+        const { inventory } = this.state; 
+        const mappedInventory = inventory.map((el, i) => (
+                // <Product key={index} product={product} deleteProduct={this.deleteProduct} 
+                // handleEditToggle={this.props.handleEditToggle}/> 
+                <div className='outer' key={el.product_id}>
+                    <div className="image-container">
+                        <img src={el.image_url} alt=""/>
+                    </div>
+                    <div className="name-price">
+                        <span>{el.product_name}</span>
+                        <span>{el.product_price}</span>
+                    </div>
+                    <div className="delete-edit">
+                        <Link to={`/edit/${el.product_id}`} ><button>Edit</button></Link>
+                        <button onClick={() => this.deleteProduct(el.product_id)} >Delete</button>
+                    </div>
+                </div>
+            )
         )
-      }) : null
-    }
-                <Form 
-                addFn={this.addProduct}/>
+        return (
+            <div className='products-flex-div'>
+                    {mappedInventory}
             </div>
         )
     }

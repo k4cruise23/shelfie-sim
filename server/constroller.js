@@ -1,31 +1,4 @@
-module.exports = {
-    getProducts: (req, res) => {
-        const db = req.app.get('db')
-        db.read_products().then(result => {
-            res.status(200).send(result)
-        })
-    },
-    addProduct: async (req, res) => {
-        const db = req.app.get('db')
-        let {item, price, image} = req.body
-        const products = await db.create_product({item, price, image})
-        res.status(200).send(products)
-    },
-    deleteProduct: async (req, res) => {
-        const db = req.app.get('db')
-        const {id} = req.params
-        const remove = await db.delete_product([id])
-        res.status(200).send(remove)
-    },
-    updateProduct: async (req, res) => {
-        const db = req.app.get('db')
-        const {product_name, product_price, image_url} = req.body
-        const {id} = req.params
-        const update =  await db.update_products([product_name, product_price, image_url, id])
-        res.status(200).send(update)
-    }
 
-}
 
 // updateAddress: (req, res) => {
 //     const db = req.app.get('db')
@@ -35,3 +8,47 @@ module.exports = {
 //         res.status(200).send(result)
 //     })
 // }
+
+module.exports = {
+    getInventory: (req, res) => {
+        const db = req.app.get('db'); 
+        db.read_products()
+        .then(products => {
+            res.status(200).send(products)
+        })
+    },
+    getProduct: (req, res) => {
+        const db = req.app.get('db'); 
+        const { id } = req.params; 
+        db.get_product([id])
+        .then(product => {
+            res.status(200).send(product)
+        })
+    },
+    createProduct: (req, res) => {
+        const db = req.app.get('db');
+        const { name, price, img } = req.body; 
+        db.create_product([name, price, img])
+        .then(() => {
+            res.status(200).send('Product has been created')
+        })
+    },
+    updateProduct: (req, res ) => {
+        const db = req.app.get('db'); 
+        const { id } = req.params; 
+        const { name, price, img } = req.body; 
+        db.update_products([name, price, img, id])
+        .then(() => {
+            res.status(200).send(`Product ${id} has been updated`)
+        })
+    },
+    deleteProduct: (req, res) => {
+        const db = req.app.get('db');
+        const { id } = req.params; 
+        db.delete_product([id])
+        .then(() =>{
+            res.status(200).send(`Product ID: ${id} was deleted`)
+        })
+        .catch(error => console.log('deleteProduct:', error))
+    }
+}

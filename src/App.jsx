@@ -1,76 +1,21 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './App.css';
-import axios from 'axios'
-import Header from './Components/Header'
+import Dashboard from './Components/Dashboard' 
 import Form from './Components/Form'
-import Dashboard from './Components/Dashboard'
-import route from '../src/route'
+import Header from './Components/Header'; 
+import {Route, Switch} from 'react-router-dom'; 
 
-class App extends Component{
-  constructor(){
-    super()
 
-    this.state = {
-      inventory: [
+export default function App() {
+  return (
+    <div className="App">
+        <Header /> 
         
-      ]
-    }
-
-
-    // this.addProduct = this.addProduct.bind(this)
-    // this.deleteProduct = this.deleteProduct.bind(this)
-  }
-
-  // componentDidMount(){
-  //   this.getProducts()
-  // }
-
-  // getProducts(){
-  //   axios.get('/api/inventory').then(res => {
-  //     this.setState({inventory: res.data})
-  //   })
-  // }
-
-  // // componentDidUpdate(prevProps, prevState){
-  // //   if(prevState !== this.state){
-  // //       this.getProducts()
-  // //   }
-  // // }
-
-  // addProduct(body){
-  //   axios.post('/api/inventory', body).then(res => {
-  //     this.setState({inventory: res.data})
-  //   })
-  // }
-
-  // deleteProduct(id) {
-  //   // console.log(id)
-  //   axios.delete(`/api/inventory/${id}`).then(res => {
-  //     // console.log(res.data)
-  //     this.setState({inventory: res.data})
-  //   })
-  // }
-
-
-
-
-  render(){
-
-    return(
-      <div className="App">
-        {route}
-        <Header />
-        <Form 
-        addFn={this.addProduct}/>
-        {this.state.inventory ?  
-        <Dashboard 
-        inventory={this.state.inventory}
-        // deleteFn={this.deleteProduct}
-         />
-        : <h3>loading....</h3> }
+        <Switch>
+          <Route exact path='/' component={Dashboard} />
+          <Route path='/add' component={Form}/>
+          <Route path='/edit/:id' component={Form} />
+        </Switch>
       </div>
-    )
-  }
-}
-
-export default App;
+  )
+};

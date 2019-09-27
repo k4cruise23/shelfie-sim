@@ -6,13 +6,13 @@ const {SERVER_PORT, CONNECTION_STRING} = process.env
 const ctrl = require('./constroller.js')
 
 
-
 app.use(express.json())
 
-app.get('/api/inventory', ctrl.getProducts)
-app.post('/api/inventory', ctrl.addProduct)
-app.delete('/api/inventory/:id', ctrl.deleteProduct)
-app.put('/api/inventory/:id', ctrl.updateProduct)
+app.get('/api/inventory', ctrl.getInventory); 
+app.get('/api/product/:id', ctrl.getProduct)
+app.post('/api/product', ctrl.createProduct); 
+app.put('/api/products/:id', ctrl.updateProduct); 
+app.delete('/api/products/:id', ctrl.deleteProduct)
 
 massive(CONNECTION_STRING).then(db => {
     app.set('db', db)

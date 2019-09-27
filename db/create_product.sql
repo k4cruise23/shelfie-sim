@@ -1,4 +1,4 @@
 INSERT INTO products (product_name, product_price, image_url)
-VALUES (${item}, ${price}, ${image});
+VALUES ($1, $2, $3);
 
 SELECT * FROM products;

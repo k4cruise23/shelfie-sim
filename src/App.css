@@ -1,33 +1,87 @@
-.App {
-  text-align: center;
+img {
+  height: 200px;
+  width: 250px; 
+  padding: 10px;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+.products-form-container {
+  display: flex; 
+  justify-content: space-evenly;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.products-flex-div {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+}
+.form-flex-div {
+  display: flex; 
+  justify-content: center; 
 }
 
-.App-link {
-  color: #61dafb;
+.form-container {
+  background: #2C905C;
+  width: 30%;
+  padding: 20px;
+  margin: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.input-container {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column; 
+  justify-content: flex-start;
+}
+  
+.header-container {
+  height: 10vh;
+  width: auto; 
+  background-color: #AB2A18; 
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.shelfie-image {
+  height: 50px;
+  width: auto;
+  margin-left: 45px;
+  margin-right: 20px;
+}
+
+.nav-buttons { 
+  font-size: 18px;
+  margin-left: 30px;
+  background: #ED6B5A;
+  padding: 10px;
+  text-decoration: none;
+  color: black;
+}
+.product-container {
+  width: 25%;
+  background: #913A2F;
+  padding: 20px;
+  margin-bottom: 20px;
+  margin-top: 40px;
+  border-radius: 7px;
+}
+
+.info-container { 
+  display: flex;
+  justify-content: space-between;
+  font-size: 22px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.form-buttons-container{
+  display: flex;
+  justify-content: space-between;
+
 }

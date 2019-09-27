@@ -1,57 +1,150 @@
 import React, {Component} from 'react'
+import axios from 'axios';
+import {Link} from 'react-router-dom'
+import '../App.css'
 
-export default class Form extends Component{
-    constructor(props){
-        super(props)
+export default class Form extends Component {
+    constructor() {
+        super();
 
         this.state = {
-            item: '',
-            price: 0,
-            img: '',
-            edit: false
+            name: '',
+            price: 0, 
+            img: 'https://image.shutterstock.com/image-vector/no-image-vector-symbol-missing-260nw-1414779644.jpg', 
+            editingProduct: false 
         }
     }
 
-    handleChange = e => {
-        this.setState({[e.target.name]: e.target.value})
-    }
-
-    cancelButton= () => {
-        if (this.props.match.params.id) {
-            this.props.history.push('/')
-        } else {
+    componentDidUpdate(prevProps) {
+        const id = this.props.match.params.id; 
+        const prevId = prevProps.match.params.id; 
+        if(id !== prevId) {
             this.setState({
-                item: '',
-                price: 0,
-                img: '',
-                edit: false
-            })
+            name: '',
+            price: 0, 
+            img: 'https://image.shutterstock.com/image-vector/no-image-vector-symbol-missing-260nw-1414779644.jpg'  
+        })
         }
     }
 
-
+    componentDidMount() {
+        const {id} = this.props.match.params; 
+        if(id != null || undefined) {
+            this.getProduct(); 
+            this.handleEditToggle();
+        }
+    }
     
+    getProduct = () => {
+        const {id} = this.props.match.params; 
+        axios.get(`/api/product/${id}`)
+            .then(response => {
+                const { name, price, img} = response.data[0]; 
+                this.setState({
+                    name, 
+                    price,
+                    img
+                })
+            })
+    }
+
+    handleEditToggle = () => {
+        this.setState({
+            editingProduct: true
+        })
+      }
 
 
-    render(){
-        return(
-            <div className='Form' >
-                <div className="inputs">
-                    <h3>Image url: </h3>
-                    <input type="text" name='image' onChange={this.handleChange} />
-                    <h3>Product Name: </h3>
-                    <input type="text" name='item' onChange={this.handleChange} />
-                    <h3>Price: </h3>
-                    <input type="text" name='price' onChange={this.handleChange} />
+    // handleName = (value) => {
+    //     this.setState({
+    //         name: value 
+    //     })
+    // }
+
+    // handlePrice = (value) => {
+    //     this.setState({
+    //         price: value 
+    //     })
+    // }
+
+    // handleImageUrl = (value) => {
+    //     this.setState({
+    //         img: value
+    //     })
+    // }
+
+    handleChange = (statename, e) => {
+        this.setState({[statename]: e})
+    }
+
+    cancelProduct = () => {
+        this.setState({
+            name: '',
+            price: 0, 
+            img: 'https://image.shutterstock.com/image-vector/no-image-vector-symbol-missing-260nw-1414779644.jpg',
+            selectedId: null,
+        })
+    }
+
+    createProduct = () => {
+        axios.post('/api/product', {
+            name: this.state.name, 
+            price: this.state.price, 
+            img: this.state.img
+        })
+    }
+
+    updateProduct = (id) => {
+        axios.put(`/api/products/${id}`, {
+            name: this.state.name, 
+            price: this.state.price, 
+            img: this.state.img
+        })
+    }
+
+    render() {
+        const { name, price, img } = this.state; 
+        const { id } = this.props.match.params; 
+        return (
+            <div className='form-flex-div'>
+                {!this.state.editingProduct
+                ?
+                (<div className='form-container'>
+                    <div className='input-container'>
+                        <img src={img} alt="" />
+                        <label>Image URL:</label>
+                        <input onChange={e => this.handleChange("img", e.target.value)} ></input>
+                        <label>Product Name:</label>
+                        <input onChange={e => this.handleChange('name', e.target.value)}></input>
+                        <label>Price:</label>
+                        <input onChange={e => this.handleChange('price', e.target.value)} value={this.state.price}></input>
+                    </div>
+                    <div className="form-buttons-container">
+                        <button onClick={this.cancelProduct}>Cancel</button>
+                        <Link to='/'><button onClick={this.createProduct}>Add to Inventory</button></Link>
+                    </div>
                 </div>
-                <div className="buttons">
-                    <button onClick={() => this.cancelButton()} >Cancel</button>
-                    <button onClick={() => this.props.addFn(this.state)} >Add to Inventory</button>
+                )
+                :
+                (
+                <div className='form-container'>
+                    <div className='input-container'>
+                        <img src={img} alt="" />
+                        <label>Image URL:</label>
+                        <input onChange={e => this.handleChange('img', e.target.value)} name='img'></input>
+                        <label>Product Name:</label>
+                        <input onChange={e => this.handleChange('name', e.target.value)} name='name'></input>
+                        <label>Price:</label>
+                        <input onChange={e => this.handleChange('price', e.target.value)} name='price'></input>
+                    </div>
+                    <div className="form-buttons-container">
+                        <Link to='/'><button>Cancel</button></Link>
+                        <Link to='/'><button onClick={() => this.updateProduct(id)}>Save Changes</button></Link>
+                    </div>
                 </div>
+                )
+                }
             </div>
         )
     }
 }
-
-
-
